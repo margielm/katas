@@ -4,6 +4,7 @@ package eu.margiel.katas.calculator;
 import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -38,17 +39,18 @@ public class StringCalculator {
     }
 
     private String[] getArrayOfValues(String numbers) {
-        String delimiter = getDelimiter(numbers);
         return numbers
-            .replaceAll("//" + delimiter + "\\n", "")
-            .split(delimiter);
+            .replaceAll("//.*\\n", "")
+            .split(getDelimiter(numbers));
     }
 
     private String getDelimiter(String numbers) {
         String delimiter = "[,|\\n]";
-        Matcher matcher = compile("//(.)\\n").matcher(numbers);
+        Matcher matcher = compile("//(.*)\\n").matcher(numbers);
         if (matcher.find()) {
-            delimiter = matcher.group(1);
+            String group = matcher.group(1);
+            String replace = group.replaceAll("[\\[\\]]", "");
+            delimiter = Pattern.quote(replace);
         }
         return delimiter;
     }

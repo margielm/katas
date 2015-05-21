@@ -60,6 +60,11 @@ class StringCalculatorSpec extends Specification {
           doAdd("1000,1001,1002") == 1000
     }
 
+    def "should allow delimiters of any length"() {
+        expect:
+          doAdd("//[***]\n1***2***3***4") == 10
+    }
+
 
     private def doAdd(String numbers) {
         calculator.add(numbers)
