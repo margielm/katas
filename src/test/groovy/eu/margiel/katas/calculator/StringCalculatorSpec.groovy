@@ -9,13 +9,13 @@ class StringCalculatorSpec extends Specification {
     def "should return 0 when adding empty string"() {
 
         expect:
-          calculator.add("") == 0
+          doAdd("") == 0
     }
 
     @Unroll
     def "should return same value for adding one number"() {
         expect:
-          calculator.add(numbers) == result
+          doAdd(numbers) == result
         where:
           numbers || result
           "1"     || 1
@@ -25,6 +25,21 @@ class StringCalculatorSpec extends Specification {
 
     def "should return sum of two numbers"() {
         expect:
-          calculator.add("1,1") == 2
+          doAdd("1,1") == 2
+    }
+
+
+    def "should sum numbers separated by \\n"() {
+        expect:
+          doAdd("1\n2") == 3
+    }
+
+    def "should sum numbers separated by \\n and ,"() {
+        expect:
+          doAdd("1\n2,3") == 6
+    }
+
+    private def doAdd(String numbers) {
+        calculator.add(numbers)
     }
 }
