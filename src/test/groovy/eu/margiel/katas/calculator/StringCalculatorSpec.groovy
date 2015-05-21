@@ -39,6 +39,14 @@ class StringCalculatorSpec extends Specification {
           doAdd("1\n2,3") == 6
     }
 
+    @Unroll("should override delimiter with #delimiter")
+    def "should override delimiter"() {
+        expect:
+          doAdd("//${delimiter}\n1${delimiter}2${delimiter}3${delimiter}4") == 10
+        where:
+          delimiter << [";", "-"]
+    }
+
     private def doAdd(String numbers) {
         calculator.add(numbers)
     }
