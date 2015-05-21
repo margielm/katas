@@ -47,6 +47,14 @@ class StringCalculatorSpec extends Specification {
           delimiter << [";", "-"]
     }
 
+    def "should throw exception if has negative numbers"() {
+        when:
+          doAdd("1,-100,-200")
+        then:
+          def ex = thrown(IllegalArgumentException)
+          ex.message =="negatives not allowed: -100, -200"
+    }
+
     private def doAdd(String numbers) {
         calculator.add(numbers)
     }
