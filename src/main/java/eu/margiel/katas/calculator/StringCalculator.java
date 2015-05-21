@@ -15,11 +15,15 @@ public class StringCalculator {
         if (numbers.length() == 0) {
             return 0;
         }
-        Supplier<IntStream> supplier = () -> Arrays.stream(getArrayOfValues(numbers)).mapToInt(Integer::parseInt);
+        Supplier<IntStream> supplier = getNumberStreamSupplier(numbers);
 
         validateNumbers(supplier.get());
 
         return supplier.get().sum();
+    }
+
+    private Supplier<IntStream> getNumberStreamSupplier(String numbers) {
+        return () -> Arrays.stream(getArrayOfValues(numbers)).mapToInt(Integer::parseInt).filter(number -> number <=1000);
     }
 
     private void validateNumbers(IntStream stream) {
@@ -28,7 +32,6 @@ public class StringCalculator {
             .boxed()
             .map(String::valueOf)
             .collect(Collectors.joining(", "));
-
         if (negative.length() > 0) {
             throw new IllegalArgumentException("negatives not allowed: " + negative);
         }
