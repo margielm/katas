@@ -10,6 +10,7 @@ public class Frame {
     private List<Integer> rolls = new ArrayList<>();
     private Frame next;
 
+
     public Frame next(Frame next) {
         this.next = next;
         return next;
@@ -19,7 +20,7 @@ public class Frame {
         return rolls.size() == 2 || selfScore() == ALL_PINS;
     }
 
-    public Frame next() {
+    public  Frame next() {
         return next;
     }
 
@@ -58,7 +59,7 @@ public class Frame {
         return rolls.stream().mapToInt(Integer::intValue).sum();
     }
 
-    public boolean isSpare() {
+    private  boolean isSpare() {
         return selfScore() == ALL_PINS && rolls.size() == 2;
     }
 }

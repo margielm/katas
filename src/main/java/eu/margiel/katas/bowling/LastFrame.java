@@ -2,6 +2,7 @@ package eu.margiel.katas.bowling;
 
 public class LastFrame extends Frame {
 
+
     @Override
     public boolean isCompleted() {
         return false;
