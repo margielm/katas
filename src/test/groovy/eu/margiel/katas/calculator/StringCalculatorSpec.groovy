@@ -65,6 +65,11 @@ class StringCalculatorSpec extends Specification {
           doAdd("//[***]\n1***2***3***4") == 10
     }
 
+    def "should allow multiple defined delimiters"() {
+        expect:
+          doAdd("//[aa][b]\n1aa2b3") == 6
+    }
+
 
     private def doAdd(String numbers) {
         calculator.add(numbers)

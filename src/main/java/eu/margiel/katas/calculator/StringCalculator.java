@@ -17,14 +17,12 @@ public class StringCalculator {
             return 0;
         }
         Supplier<IntStream> supplier = getNumberStreamSupplier(numbers);
-
         validateNumbers(supplier.get());
-
-        return supplier.get().sum();
+        return supplier.get().filter(number -> number <= 1000).sum();
     }
 
     private Supplier<IntStream> getNumberStreamSupplier(String numbers) {
-        return () -> Arrays.stream(getArrayOfValues(numbers)).mapToInt(Integer::parseInt).filter(number -> number <=1000);
+        return () -> Arrays.stream(getArrayOfValues(numbers)).mapToInt(Integer::parseInt);
     }
 
     private void validateNumbers(IntStream stream) {
@@ -34,7 +32,7 @@ public class StringCalculator {
             .map(String::valueOf)
             .collect(Collectors.joining(", "));
         if (negative.length() > 0) {
-            throw new IllegalArgumentException("negatives not allowed: " + negative);
+            throw new IllegalArgumentException("negatives not allowed: ");
         }
     }
 
@@ -45,12 +43,13 @@ public class StringCalculator {
     }
 
     private String getDelimiter(String numbers) {
-        String delimiter = "[,|\\n]";
-        Matcher matcher = compile("//(.*)\\n").matcher(numbers);
-        if (matcher.find()) {
-            String group = matcher.group(1);
-            String replace = group.replaceAll("[\\[\\]]", "");
-            delimiter = Pattern.quote(replace);
+        String delimiter = ",|\\n";
+        Matcher delimiterRedefined = compile("//(.+)\\n").matcher(numbers);
+        if (delimiterRedefined.find()) {
+            delimiter = Arrays.stream(delimiterRedefined.group(1).split("[\\[\\]]"))
+                .filter(value -> value.length() > 0)
+                .map(Pattern::quote)
+                .collect(Collectors.joining("|"));
         }
         return delimiter;
     }
