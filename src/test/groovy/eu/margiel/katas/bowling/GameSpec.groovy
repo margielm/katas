@@ -51,7 +51,7 @@ class GameSpec extends Specification {
           spare(5,5)
           spare(3,7)
           1.times({game.roll(1)})
-          16.times({game.roll(0)})
+          15.times({game.roll(0)})
 
         then:
           game.score() == 25
@@ -60,7 +60,7 @@ class GameSpec extends Specification {
     def "should score one strike and one point"() {
 
         when:
-          game.roll(10)
+          strike()
           game.roll(1)
           17.times({game.roll(0)})
 
@@ -71,18 +71,17 @@ class GameSpec extends Specification {
     def "should score one strike and whole next frame"() {
 
         when:
-          game.roll(10)
-          2.times({game.roll(1)})
-          16.times({game.roll(0)})
+          strike()
+          4.times({game.roll(1)})
+          14.times({game.roll(0)})
 
         then:
-          game.score() == 14
+          game.score() == 16
     }
     def "should score two subsequent strikes and one pin"() {
 
         when:
-          game.roll(10)
-          game.roll(10)
+          2.times({strike()})
           game.roll(1)
           15.times({game.roll(0)})
 
@@ -90,20 +89,21 @@ class GameSpec extends Specification {
           game.score() == 33
     }
 
-    def "should score three subsequent strikes and one pin"() {
+    def "should score three subsequent strikes and 5 pins"() {
 
         when:
-          game.roll(10)
-          game.roll(10)
-          game.roll(10)
+          3.times({strike()})
           game.roll(5)
+
           13.times({game.roll(0)})
 
         then:
-          game.score() == 70
+          game.score() == 75
     }
 
-    def "should score perfec game"() {
+
+
+    def "should score perfect game"() {
 
         when:
           12.times({game.roll(10)})
@@ -112,8 +112,22 @@ class GameSpec extends Specification {
           game.score() == 300
     }
 
+    def "should score spare in last frame"() {
+
+        when:
+          19.times({game.roll(0)})
+          2.times({game.roll(10)})
+
+        then:
+          game.score() == 20
+    }
+
     private void spare(int first, int second) {
+
         game.roll(first)
         game.roll(second)
+    }
+    private strike() {
+        game.roll(10)
     }
 }

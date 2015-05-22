@@ -5,24 +5,30 @@ import java.util.List;
 
 public class Game {
 
-    private List<Integer> rolls = new ArrayList<>();
+    public static final int ALL_PINS = 10;
+    private List<Frame> frames = new ArrayList<>();
+    private Frame currentFrame = null;
+
+    public Game() {
+        Frame previous = Frame.EMPTY;
+        while (frames.size() < 9) {
+            Frame frame = new Frame();
+            frames.add(frame);
+            previous = previous.next(frame);
+        }
+        frames.add(previous.next(new LastFrame()));
+        currentFrame = frames.get(0);
+    }
 
     public void roll(int pins) {
-        rolls.add(pins);
+        if (currentFrame.isCompleted()) {
+            currentFrame = currentFrame.next();
+        }
+        currentFrame.roll(pins);
     }
 
     public int score() {
-        int score = rolls.stream().mapToInt(Integer::intValue).sum();
-        if (isSpare(0)) {
-            score += rolls.get(2);
-        }
-        if (isSpare(1)) {
-            score += rolls.get(4);
-        }
-        return score;
+        return frames.stream().mapToInt(Frame::score).sum();
     }
 
-    private boolean isSpare(int frame) {
-        return rolls.get(frame*2) + rolls.get(frame*2+1) == 10;
-    }
 }
