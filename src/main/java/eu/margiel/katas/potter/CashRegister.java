@@ -25,10 +25,12 @@ public class CashRegister {
     public BigDecimal priceFor(List<Integer> cart) {
         return discoverSetsIn(cart)
             .stream()
+
             .map(BigDecimal::new)
-            .reduce(ZERO, (price, set) ->
+            .reduce(ZERO, (price, setSize) ->
                 {
-                    BigDecimal setPrice = set.multiply(BOOK_PRICE).multiply(ONE.subtract(new BigDecimal(discounts.get(set.intValue()))));
+                    BigDecimal discount = ONE.subtract(new BigDecimal(discounts.get(setSize.intValue())));
+                    BigDecimal setPrice = setSize.multiply(BOOK_PRICE).multiply(discount);
                     return price.add(setPrice);
                 }
             );
