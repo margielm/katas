@@ -3,19 +3,19 @@ package eu.margiel.katas.minesweeper;
 class FieldsConverter {
 
 
-    char[][] toMatrix(String fields) {
+    Field asField(String fields) {
         String[] rows = fields.split("\n");
         char[][] matrix = initiateMatrix(rows);
         for (int rowIdx = 0; rowIdx < matrix.length; rowIdx++) {
             char[] cells = rows[rowIdx + 1].toCharArray();
             System.arraycopy(cells, 0, matrix[rowIdx], 0, cells.length);
         }
-        return matrix;
+        return new Field(matrix);
     }
 
     private char[][] initiateMatrix(String[] rows) {
-        int noOfRows = getDimension(rows, MineSweeper.ROWS);
-        int noOfColumns = getDimension(rows, MineSweeper.COLUMNS);
+        int noOfRows = getDimension(rows, Field.ROWS);
+        int noOfColumns = getDimension(rows, Field.COLUMNS);
         return new char[noOfRows][noOfColumns];
     }
 
