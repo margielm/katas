@@ -19,17 +19,21 @@ public class MineSweeper {
         List<String> rows = new ArrayList<>();
         rows.add("Field #1:");
         for (int rowIdx = 0; rowIdx < field.countRows(); rowIdx++) {
-            String row = "";
-            for (int columnIdx = 0; columnIdx < field.countColumns(); columnIdx++) {
-                if (field.hasMineAt(rowIdx, columnIdx)) {
-                    row += Field.MINE;
-                } else {
-                    row += field.countNeighbouringMinesOf(rowIdx, columnIdx);
-                }
-            }
-            rows.add(row);
+            rows.add(swipeRow(rowIdx));
         }
         return rows.stream().collect(joining("\n"));
+    }
+
+    private String swipeRow(int rowIdx) {
+        String row = "";
+        for (int columnIdx = 0; columnIdx < field.countColumns(); columnIdx++) {
+            if (field.hasMineAt(rowIdx, columnIdx)) {
+                row += Field.MINE;
+            } else {
+                row += field.countNeighbouringMinesOf(rowIdx, columnIdx);
+            }
+        }
+        return row;
     }
 
 }
