@@ -25,7 +25,6 @@ public class CashRegister {
     public BigDecimal priceFor(List<Integer> cart) {
         return discoverSetsIn(cart)
             .stream()
-
             .map(BigDecimal::new)
             .reduce(ZERO, (price, setSize) ->
                 {

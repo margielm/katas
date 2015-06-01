@@ -6,7 +6,6 @@ import java.util.List;
 import static java.util.stream.IntStream.rangeClosed;
 
 public class GameOfLife {
-
     private List<List<Boolean>> matrix = new ArrayList<>();
 
     public GameOfLife(String input) {
